@@ -6,7 +6,7 @@ from tractusx_sdk.dataspace.services.connector.base_connector_provider import (
 
 
 def main():
-    print("Hello from txaiservicekit-sdk!")
+    print("Provider")
 
     # Initialize the parser
     parser = argparse.ArgumentParser(description="A sample Python CLI tool.")
