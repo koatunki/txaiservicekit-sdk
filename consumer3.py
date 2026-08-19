@@ -6,7 +6,7 @@ from tractusx_sdk.dataspace.models.connector import ModelFactory
 providerBPN = "BPNL00000003AYRE"
 consumerBPN = "BPNL00000003AZQP"
 
-providerURL = "http://dataprovider-controlplane.tx.test"
+providerURL = "http://dataprovider-controlplane.tx.test/api/v1/dsp"
 consumerURL = "http://dataconsumer-1-controlplane.tx.test"
 
 # connector settings (consumer)
@@ -14,9 +14,6 @@ connector_base_url = consumerURL
 connector_dma_path = "/management"  # Management API path
 connector_api_key = "TEST1"
 dataspace_version = "jupiter"  # EDC dataspace version
-
-counter_party_id = providerBPN
-counter_party_address = providerURL
 
 asset_id="100"
 # policies=[...]
@@ -88,7 +85,7 @@ def main():
         # key="https://w3id.org/edc/v0.0.1/ns/id",
         key="BusinessPartnerNumber",
         operator="=",
-        value="BPNL00000003AZQP"
+        value=consumerBPN
     )
     print(f"{filter=}")
 
@@ -105,16 +102,16 @@ def main():
         """ list """
         if args.op == "list":
             catalogs = service.get_catalog(
-                counter_party_id=counter_party_id,
-                counter_party_address=counter_party_address
+                counter_party_id=providerBPN,
+                counter_party_address=providerURL
             )
             print(f"{json.dumps(catalogs, indent=2)}")
 
         """ listid """
         if args.op == "listid":
             catalogs = service.get_catalog(
-                counter_party_id=counter_party_id,
-                counter_party_address=counter_party_address
+                counter_party_id=providerBPN,
+                counter_party_address=providerURL
             )
             print(f"  {catalogs["@id"]}")
             datasets=catalogs["dcat:dataset"]
@@ -158,8 +155,8 @@ def main():
             }
             catalog=ModelFactory.get_catalog_model(
                 dataspace_version="jupiter",
-                counter_party_address=counter_party_address,
-                counter_party_id=counter_party_id,
+                counter_party_address=providerURL,
+                counter_party_id=providerBPN,
                 queryspec=query
             )
             response=service.get_catalog(
@@ -205,8 +202,8 @@ def main():
             )
         
             dataplane_proxy_url, access_token = service.do_dsp(
-                counter_party_id=counter_party_id,
-                counter_party_address=counter_party_address,
+                counter_party_id=providerBPN,
+                counter_party_address=providerURL,
                 filter_expression=registry_filter,
                 policies=policies_to_accept
             )
@@ -225,8 +222,8 @@ def main():
             )
             print(f"{filter=}")
             dataplane_proxy_url, access_token = service.do_dsp(
-                counter_party_id=counter_party_id,
-                counter_party_address=counter_party_address,
+                counter_party_id=providerBPN,
+                counter_party_address=providerURL,
                 policies=policies_to_accept,
                 filter_expression=filter
             )
@@ -241,8 +238,8 @@ def main():
             }
             print(f"{policy=}")
             negotiation_id = service.start_edr_negotiation(
-                counter_party_id=counter_party_id,
-                counter_party_address=counter_party_address,
+                counter_party_id=providerBPN,
+                counter_party_address=providerURL,
                 target=asset_id,
                 policy=policy,
                 protocol="dataspace-protocol-http",          # Jupiter
@@ -255,8 +252,8 @@ def main():
         """ nego """
         if args.op == "nego":
             contract = service.contract_negotiations.create(
-                counter_party_address=counter_party_address,
-                counter_party_id=counter_party_id,
+                counter_party_address=providerURL,
+                counter_party_id=providerBPN,
                 asset_id=asset_id,
                 policies=policies
             )
@@ -282,16 +279,16 @@ def main():
             }
             contract = ModelFactory.get_contract_negotiation_model(
                 dataspace_version=dataspace_version,
-                counter_party_address=counter_party_address,
+                counter_party_address=providerURL,
                 offer_id=args.id,
                 asset_id=asset_id,
-                provider_id=counter_party_id,
+                provider_id=providerBPN,
                 offer_policy=offer_policy
             )
             print(f"{contract=}")
             negotiation_id = service.start_edr_negotiation(
-                counter_party_id=counter_party_id,
-                counter_party_address=counter_party_address,
+                counter_party_id=providerBPN,
+                counter_party_address=providerURL,
                 target=args.op,
                 policy=offer_policy,
             )
