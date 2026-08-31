@@ -164,11 +164,13 @@ def main():
             )
             print(f"{json.dumps(response, indent=2)}")
 
-    """ edrs """
-    if args.type == "edrs":
 
-        """ req """
-        if args.op == "req":
+
+    """ dspx """
+    if args.type == "dspx":
+
+        """ do """
+        if args.op == "do":
             if not args.id:
                 raise(BaseException("Required id"))
             permission=[{
@@ -218,7 +220,7 @@ def main():
                 # key="https://w3id.org/edc/v0.0.1/ns/id",
                 key="BusinessPartnerNumber",
                 operator="=",
-                value="BPNL00000003AZQP"
+                value=consumerBPN
             )
             print(f"{filter=}")
             dataplane_proxy_url, access_token = service.do_dsp(

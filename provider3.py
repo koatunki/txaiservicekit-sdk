@@ -21,7 +21,7 @@ usage_policy_id = "102"
 contract_id = "103"
 
 # asset settings
-asset_base_url = "http:test"
+asset_base_url = "http://a2a.agent.test.tx"
 asset_dct_type="cx-taxo:SubmodelBundle",
 asset_version="3.0",
 asset_semantic_id="urn:samm:io.catenax.part_type_information:1.0.0#PartTypeInformation"
