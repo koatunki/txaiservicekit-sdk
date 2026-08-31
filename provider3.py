@@ -91,13 +91,6 @@ usage_permission=[
     }
 ]
 
-aicatalog={
-    "ai-catalog": {
-        "type": "a2a",
-        "description": "ai agent"
-    }
-},
-
 def main():
     print("Starting...")
 
@@ -132,7 +125,12 @@ def main():
             print(f"{asset_id=}")
             response = service.create_asset(
                 asset_id=asset_id,
-                properties=aicatalog,
+                properties={
+                    "ai-catalog": {
+                        "type": "a2a",
+                        "description": "ai agent"
+                    }
+                },
                 base_url=asset_base_url,
 
             )
