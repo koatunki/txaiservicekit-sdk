@@ -155,8 +155,8 @@ def main():
             }
             catalog=ModelFactory.get_catalog_model(
                 dataspace_version="jupiter",
-                counter_party_address=counter_party_address,
-                counter_party_id=counter_party_id,
+                counter_party_address=providerURL,
+                counter_party_id=providerBPN,
                 queryspec=query
             )
             response=service.get_catalog(
