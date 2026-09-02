@@ -166,13 +166,31 @@ def main():
 
 
 
-    """ dspx """
-    if args.type == "dspx":
+    """ dsp """
+    if args.type == "dsp":
 
-        """ do """
-        if args.op == "do":
+        """ do1 """
+        if args.op == "do1":
             if not args.id:
                 raise(BaseException("Required id"))
+            # # permission=[{
+            # #     "action": "use",
+            # #     "constraint": [
+            # #     {
+            # #         "and": [
+            # #             {
+            # #                 "leftOperand": "Membership",
+            # #                 "operator": "eq",
+            # #                 "rightOperand": "active"
+            # #             },
+            # #             {
+            # #                 "leftOperand": "UsagePurpose",
+            # #                 "operator": "isAnyOf",
+            # #                 "rightOperand": "cx.core.industrycore:1"
+            # #             }
+            # #         ]
+            # #     }]
+            # # }]
             permission=[{
                 "action": "use",
                 "constraint": [
@@ -184,12 +202,18 @@ def main():
                             "rightOperand": "active"
                         },
                         {
+                            "leftOperand": "FrameworkAgreement",
+                            "operator": "eq",
+                            "rightOperand": "DataExchangeGovernance:1.0"
+                        },
+                        {
                             "leftOperand": "UsagePurpose",
                             "operator": "isAnyOf",
                             "rightOperand": "cx.core.industrycore:1"
                         }
                     ]
-                }]
+                }
+                ]
             }]
             policies_to_accept=[
                 {
