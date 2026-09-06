@@ -1,7 +1,10 @@
+import logging
 import argparse
 import json
 from tractusx_sdk.dataspace.services.connector import ServiceFactory
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 providerBPN = "BPNL00000003AYRE"
 consumerBPN = "BPNL00000003AZQP"
@@ -111,7 +114,9 @@ def main():
         base_url=connector_base_url,
         dma_path=connector_dma_path,
         headers={"X-Api-Key": connector_api_key, "Content-Type": "application/json"},
-        verbose=True
+        verbose=True,
+        logger = logger,
+        debug=True
     )
 
     """ Asset """

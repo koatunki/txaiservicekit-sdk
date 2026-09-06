@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Debug with Args",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}", // Debugs the currently active file
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            
+            // ADD YOUR ARGUMENTS HERE 👇
+            "args": ["dsp", "do", "--id", "100"]
+        }
+    ]
+}
