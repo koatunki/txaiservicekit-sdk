@@ -22,6 +22,29 @@ dataspace_version = "jupiter"  # EDC dataspace version
 asset_id="100"
 #asset_id="MTAz:MTAw:ZGU1ZTE1MTMtNzllMy00ZmQzLTg4NGYtNWVhNWJjZjM3OWNk"
 
+policy=[{
+    "odrl:permission": [{
+        "odrl:action": "odrl:use",
+        "odrl:constraint": [{
+            "odrl:and": [{
+                "odrl:leftOperand": "https://w3id.org/catenax/2025/9/policy/FrameworkAgreement",
+                "odrl:operator": "odrl:eq",
+                "odrl:rightOperand": "DataExchangeGovernance:1.0"
+            },
+            {
+                "odrl:leftOperand": "https://w3id.org/catenax/2025/9/policy/Membership",
+                "odrl:operator": "odrl:eq",
+                "odrl:rightOperand": "active"
+            },
+            {
+                "odrl:leftOperand": "https://w3id.org/catenax/2025/9/policy/UsagePurpose",
+                "odrl:operator": "odrl:isAnyOf",
+                "odrl:rightOperand": "cx.core.industrycore:1"
+            }]
+        }]
+    }]
+}]
+
 def main():
     logger.info("Starting...")
 
@@ -138,32 +161,7 @@ def main():
         if args.op == "do":
             if not args.id:
                 raise(BaseException("Required id"))
-            policies_to_accept=[
-                {
-                    "odrl:permission": [{
-                        "odrl:action": "odrl:use",
-                        "odrl:constraint": [{
-                            "odrl:and": [
-                            {
-                                "odrl:leftOperand": "https://w3id.org/catenax/2025/9/policy/FrameworkAgreement",
-                                "odrl:operator": "odrl:eq",
-                                "odrl:rightOperand": "DataExchangeGovernance:1.0"
-                            },
-                            {
-                                "odrl:leftOperand": "https://w3id.org/catenax/2025/9/policy/Membership",
-                                "odrl:operator": "odrl:eq",
-                                "odrl:rightOperand": "active"
-                            },
-                            {
-                                "odrl:leftOperand": "https://w3id.org/catenax/2025/9/policy/UsagePurpose",
-                                "odrl:operator": "odrl:isAnyOf",
-                                "odrl:rightOperand": "cx.core.industrycore:1"
-                            }
-                            ]
-                        }]
-                    }]
-                }
-            ]
+            policies_to_accept=policy
             registry_filter = service.get_filter_expression(
                 key="https://w3id.org/edc/v0.0.1/ns/id",
                 operator="=",
