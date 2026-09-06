@@ -22,7 +22,7 @@ dataspace_version = "jupiter"  # EDC dataspace version
 asset_id="100"
 #asset_id="MTAz:MTAw:ZGU1ZTE1MTMtNzllMy00ZmQzLTg4NGYtNWVhNWJjZjM3OWNk"
 
-policy=[{
+policies_to_accept=[{
     "odrl:permission": [{
         "odrl:action": "odrl:use",
         "odrl:constraint": [{
@@ -161,7 +161,6 @@ def main():
         if args.op == "do":
             if not args.id:
                 raise(BaseException("Required id"))
-            policies_to_accept=policy
             registry_filter = service.get_filter_expression(
                 key="https://w3id.org/edc/v0.0.1/ns/id",
                 operator="=",
