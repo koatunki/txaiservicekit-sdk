@@ -5,8 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "tractusx-sdk",
+    "tractusx-sdk>=0.8.2",
 ]
 
-[tool.uv.sources]
-tractusx-sdk = { path = "/home/ubuntu/github/eclipse-tractusx/tractusx-sdk", editable = true }
+
