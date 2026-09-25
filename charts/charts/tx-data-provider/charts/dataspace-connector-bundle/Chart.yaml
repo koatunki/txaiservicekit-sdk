@@ -1,0 +1,22 @@
+apiVersion: v2
+dependencies:
+- condition: tractusx-connector.enabled
+  name: tractusx-connector
+  repository: https://eclipse-tractusx.github.io/charts/dev
+  version: 0.12.0
+- condition: postgresql.enabled
+  name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 15.2.1
+- condition: vault.enabled
+  name: vault
+  repository: https://helm.releases.hashicorp.com
+  version: 0.27.0
+description: 'Helm chart for Capability Bundle: Dataspace Connector  For more information
+  on the Tractus-X EDC, see https://github.com/eclipse-tractusx/tractusx-edc '
+home: https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/dataspace-connector-bundle
+name: dataspace-connector-bundle
+sources:
+- https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/dataspace-connector-bundle
+type: application
+version: 1.3.0

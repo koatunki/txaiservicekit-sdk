@@ -1,0 +1,14 @@
+apiVersion: v2
+dependencies:
+- condition: simple-data-backend.enabled
+  name: simple-data-backend
+  repository: https://eclipse-tractusx.github.io/charts/dev
+  version: 0.1.0
+description: 'Helm chart for Capability Bundle: Data Persistence Layer  The Data Persistence
+  Layer Bundle provides a simple data backend for the Tractus-X ecosystem. '
+home: https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/data-persistence-layer-bundle
+name: data-persistence-layer-bundle
+sources:
+- https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/data-persistence-layer-bundle
+type: application
+version: 1.0.0
