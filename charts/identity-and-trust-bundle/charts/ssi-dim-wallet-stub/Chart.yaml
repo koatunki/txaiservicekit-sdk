@@ -1,0 +1,19 @@
+apiVersion: v2
+appVersion: 0.0.11
+dependencies:
+- condition: keycloak.enabled
+  name: centralidp
+  repository: https://eclipse-tractusx.github.io/charts/dev
+  version: 3.0.0
+- alias: postgresql
+  condition: postgresql.enabled
+  name: postgres
+  repository: oci://registry-1.docker.io/cloudpirates
+  version: 0.11.0
+description: 'A Helm chart to deploy SSI DIM wallet stub in kubernetes cluster '
+home: https://github.com/eclipse-tractusx/ssi-dim-wallet-stub/tree/main/charts/ssi-dim-wallet-stub
+name: ssi-dim-wallet-stub
+sources:
+- https://github.com/eclipse-tractusx/ssi-dim-wallet-stub/tree/main/charts/ssi-dim-wallet-stub
+type: application
+version: 0.1.17

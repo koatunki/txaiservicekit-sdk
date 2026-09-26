@@ -1,0 +1,13 @@
+apiVersion: v2
+appVersion: 23.0.7
+dependencies:
+- name: keycloak
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  version: 19.3.0
+description: Helm chart for Central Keycloak Instance
+home: https://github.com/eclipse-tractusx/portal-iam
+name: centralidp
+sources:
+- https://github.com/eclipse-tractusx/portal-iam
+type: application
+version: 3.0.0
