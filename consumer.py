@@ -45,6 +45,12 @@ policies_to_accept=[{
     }]
 }]
 
+negotiation_context=[
+    "https://w3id.org/catenax/2025/9/policy/odrl.jsonld",
+    "https://w3id.org/catenax/2025/9/policy/context.jsonld",
+    {"@vocab": "https://w3id.org/edc/v0.0.1/ns/"},
+]
+
 def main():
     logger.info("Starting...")
 
@@ -171,7 +177,8 @@ def main():
                 counter_party_id=providerBPN,
                 counter_party_address=providerURL,
                 filter_expression=registry_filter,
-                policies=policies_to_accept
+                policies=policies_to_accept,
+                negotiation_context=negotiation_context
             )
             print(f"{dataplane_proxy_url=}")
             print(f"{access_token=}")
