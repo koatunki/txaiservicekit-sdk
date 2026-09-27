@@ -61,7 +61,9 @@ def main():
     parser.add_argument("type", type=str, help="catalog, edr")
     parser.add_argument("op", type=str, help="list, listid; create")
     parser.add_argument("-i", "--id", type=str, help="Target id")
-    
+    parser.add_argument("-d", "--debug", type=bool, default=False, help="Turn on debug")
+    parser.add_argument("-v", "--verbose", type=bool, default=False, help="Verbose")
+
     # Parse the arguments
     args = parser.parse_args()
 
@@ -70,9 +72,9 @@ def main():
         base_url=connector_base_url,
         dma_path=connector_dma_path,
         headers={"X-Api-Key": connector_api_key, "Content-Type": "application/json"},
-        verbose=True,
+        verbose=args.verbose,
         logger = logger,
-        debug=True
+        debug=args.debug
     )
 
     filter=service.get_filter_expression(
