@@ -295,6 +295,21 @@ apisix:
       - host: apisix.tx.test
         paths:
           - /
+  apisix:
+    admin:
+      allow:
+        ipList:
+          - 127.0.0.1/24
+          # pod network, so requests through the ingress controller are accepted
+          - 10.244.0.0/16
+      ingress:
+        enabled: true
+        className: "nginx"
+        hosts:
+          - host: apisix-admin.tx.test
+            paths:
+              - /apisix
+              - /ui
   etcd:
     replicaCount: 1
     persistence:
