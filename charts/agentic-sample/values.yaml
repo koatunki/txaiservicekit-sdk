@@ -216,7 +216,6 @@ identity-and-trust-bundle:
     wallet:
       replicaCount: 1
       host: ssi-dim-wallet-stub.tx.test
-      nameSpace: "umbrella"
       appName: "ssi-dim-wallet-stub"
       configName: "ssi-dim-wallet-config"
       serviceName: "ssi-dim-wallet-service"
