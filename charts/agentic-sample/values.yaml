@@ -281,3 +281,21 @@ identity-and-trust-bundle:
       enabled: false
       size: 10Gi
       storageClass: standard
+
+apisix:
+  enabled: true
+  service:
+    type: ClusterIP
+    # chart always renders externalTrafficPolicy, which is invalid for ClusterIP
+    externalTrafficPolicy: ""
+  ingress:
+    enabled: true
+    className: "nginx"
+    hosts:
+      - host: apisix.tx.test
+        paths:
+          - /
+  etcd:
+    replicaCount: 1
+    persistence:
+      enabled: false

@@ -11,5 +11,8 @@ dependencies:
 - name: identity-and-trust-bundle
   repository: file://../identity-and-trust-bundle
   version: 1.1.3
-digest: sha256:7dd5f684715354449a19cfb6b2edd4fc8f30586bcbfa83eacde199c39e46c5e3
-generated: "2026-09-26T15:02:12.81257804+09:00"
+- name: apisix
+  repository: https://charts.apiseven.com
+  version: 2.17.0
+digest: sha256:a759db4dd700edc7ce704288d633b4661b5e59da25d635cfc1d82b39d3727e16
+generated: "2026-09-27T16:25:28.532091404+09:00"
