@@ -1,11 +1,12 @@
 import logging
 import argparse
 import json
+from urllib.parse import urlparse
+import requests
 from tractusx_sdk.dataspace.services.connector import ServiceFactory
 from tractusx_sdk.dataspace.models.connector import ModelFactory
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 providerBPN = "BPNL00000003AYRE"
 consumerBPN = "BPNL00000003AZQP"
@@ -18,6 +19,11 @@ connector_base_url = consumerURL
 connector_dma_path = "/management"  # Management API path
 connector_api_key = "TEST1"
 dataspace_version = "jupiter"  # EDC dataspace version
+
+# apisix admin api (via ingress; or kubectl port-forward svc/aiservicedemo-apisix-admin 9180:9180 and use http://127.0.0.1:9180)
+apisix_admin_url = "http://apisix-admin.tx.test"
+apisix_admin_key = "edd1c9f034335f136f87ad84b625c8f1"  # chart default admin key
+apisix_route_id = "dataplane"
 
 asset_id="100"
 #asset_id="MTAz:MTAw:ZGU1ZTE1MTMtNzllMy00ZmQzLTg4NGYtNWVhNWJjZjM3OWNk"
@@ -51,6 +57,33 @@ negotiation_context=[
     {"@vocab": "https://w3id.org/edc/v0.0.1/ns/"},
 ]
 
+def set_apisix_route(route_id, url, token):
+    """ route /<route_id>/* on apisix to url, adding the token as Authorization header """
+    target = urlparse(url)
+    port = target.port or (443 if target.scheme == "https" else 80)
+    route = {
+        "uri": f"/{route_id}/*",
+        "upstream": {
+            "type": "roundrobin",
+            "scheme": target.scheme,
+            "pass_host": "node",
+            "nodes": {f"{target.hostname}:{port}": 1},
+        },
+        "plugins": {
+            "proxy-rewrite": {
+                "regex_uri": [f"^/{route_id}/(.*)", f"{target.path.rstrip('/')}/$1"],
+                "headers": {"set": {"Authorization": token}},
+            }
+        },
+    }
+    response = requests.put(
+        f"{apisix_admin_url}/apisix/admin/routes/{route_id}",
+        headers={"X-API-KEY": apisix_admin_key},
+        json=route,
+    )
+    response.raise_for_status()
+    return response.json()
+
 def main():
     logger.info("Starting...")
 
@@ -58,14 +91,18 @@ def main():
     parser = argparse.ArgumentParser(description="A sample Python CLI tool.")
 
     # Add a positional argument (required by default)
-    parser.add_argument("type", type=str, help="catalog, edr")
-    parser.add_argument("op", type=str, help="list, listid; create")
+    parser.add_argument("type", type=str, help="catalog, dsp, apisix")
+    parser.add_argument("op", type=str, help="list, listid, get; do; setroute")
     parser.add_argument("-i", "--id", type=str, help="Target id")
-    parser.add_argument("-d", "--debug", type=bool, default=False, help="Turn on debug")
-    parser.add_argument("-v", "--verbose", type=bool, default=False, help="Verbose")
+    parser.add_argument("-u", "--url", type=str, help="Route target url (apisix setroute)")
+    parser.add_argument("-t", "--token", type=str, help="Api token for the route target (apisix setroute)")
+    parser.add_argument("-r", "--route", type=str, default=apisix_route_id, help="Apisix route id")
+    parser.add_argument("-d", "--debug", action="store_true", help="Turn on debug")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Verbose")
 
     # Parse the arguments
     args = parser.parse_args()
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO if args.verbose else logging.WARNING)
 
     service = ServiceFactory.get_connector_consumer_service(
         dataspace_version=dataspace_version,
@@ -185,6 +222,9 @@ def main():
             print(f"{dataplane_proxy_url=}")
             print(f"{access_token=}")
 
+            # Set the counterpart edc url and token to apisix
+            response = set_apisix_route(apisix_route_id, dataplane_proxy_url, access_token)
+            print(f"{json.dumps(response, indent=2)}")      
 
     logger.info ("Finished.")
 

@@ -4,7 +4,6 @@ import json
 from tractusx_sdk.dataspace.services.connector import ServiceFactory
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
 
 providerBPN = "BPNL00000003AYRE"
 consumerBPN = "BPNL00000003AZQP"
@@ -104,11 +103,12 @@ def main():
     parser.add_argument("type", type=str, help="asset, policy, contract")
     parser.add_argument("op", type=str, help="create, list, get <id>, listid; create-access, create-usage, list, listid; create, list, listid, get <id>")
     parser.add_argument("-i", "--id", type=str, help="Target id")
-    parser.add_argument("-d", "--debug", type=bool, default=False, help="Turn on debug")
-    parser.add_argument("-v", "--verbose", type=bool, default=False, help="Verbose")
+    parser.add_argument("-d", "--debug", action="store_true", help="Turn on debug")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Verbose")
 
     # Parse the arguments
     args = parser.parse_args()
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO if args.verbose else logging.WARNING)
     
     # Provider: Create and publish an asset
     service = ServiceFactory.get_connector_provider_service(
